@@ -89,10 +89,22 @@ export const loginUser = async(req, res) => {
 
 export const getUserByStatus = async(req, res) => {
     try {
-        const users = await User.find();
+        const { status } = req.params;
+        if (!["active", "inactive"].includes(status)) {
+            return res.status(400).json({ message: "Invalid status. Use 'active' or 'inactive'." });
+        }
+
+
+        //find users based on status
+        const users = await User.find({ status });
+        if (users.length === 0) {
+            return res.status(404).json({ message: `No ${status}users found.` });
+        }
+        res.json(users);
 
     } catch (error) {
-        console.log(error);
+
+        res.status(500).json({ message: error.message });
     }
 }
 

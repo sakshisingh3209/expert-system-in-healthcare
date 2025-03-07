@@ -16,6 +16,7 @@ import doctorRoutes from "./routes/doctorRoute.js";
 import feedbackRoutes from "./routes/feedbackRoute.js";
 import userRoutes from "./routes/userRoute.js";
 import patientRoutes from "./routes/patientRoute.js";
+import adminRoutes from "./routes/adminRoute.js";
 dotenv.config()
 const app = express();
 app.use(cors());
@@ -33,6 +34,7 @@ app.use("/api/v1/doctors", doctorRoutes);
 app.use("/api/v1/feedback", feedbackRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/patients", patientRoutes);
+app.use("/api/v1/admin", adminRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
