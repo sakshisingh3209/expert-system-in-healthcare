@@ -10,10 +10,11 @@ export const createUser = async(req, res) => {
             username,
             phoneNumber,
             role,
-            password
+            password,
+            email
         } = req.body;
 
-        if (!name || !username || !phoneNumber || !role) {
+        if (!name || !username || !phoneNumber || !role || !email) {
             return res.status(400).json({
                 message: 'Something is missing'
             })
@@ -33,7 +34,8 @@ export const createUser = async(req, res) => {
             username,
             password: hashedPassword,
             phoneNumber,
-            role
+            role,
+            email
         });
         await user.save();
         res.status(201).json({
