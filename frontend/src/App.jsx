@@ -7,6 +7,7 @@ import Home from "./components/Home";
 
 
 
+
 const appRouter=createBrowserRouter([
   {
     path:'/',
@@ -27,6 +28,7 @@ function App() {
 
   return (
     <div>
+      
 <RouterProvider router={appRouter}/>
     </div>
   );
