@@ -5,7 +5,10 @@ import { Label } from '../ui/label';
 
 import { Button } from '../ui/button';
 import { RadioGroup } from '../ui/radio-group';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { USER_API_END_POINT } from '../utils/constant';
+import { toast } from 'sonner';
+import axios from 'axios';
 
 function Login() {
 const [input,setInput]=useState({
@@ -13,13 +16,30 @@ const [input,setInput]=useState({
     password:"",
     role:""
   });
+  const navigate= useNavigate();
   const changeEventHandler=(e)=>{
     setInput({...input,[e.target.name]:e.target.value});
   }
   
   const submitHandler=async(e)=>{
     e.preventDefault();
-    console.log(input);
+ 
+    
+  try{
+    const res=  await axios.post(`${USER_API_END_POINT}/login`,input,{
+      headers:{
+        "Content-Type":"application/json"
+      },
+      withCredentials:true,
+    });
+   if(res.data.success){
+    navigate("/");
+    toast.success(res.data.message);
+   }
+  }catch(error){
+console.log(error);
+  }
+  
   }
 
   return (
