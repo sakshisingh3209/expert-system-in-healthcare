@@ -2,7 +2,7 @@ import { User } from "../models/UserModel.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
-export const createUser = async(req, res) => {
+export const register = async(req, res) => {
 
     try {
         const {
@@ -14,16 +14,18 @@ export const createUser = async(req, res) => {
             email
         } = req.body;
 
+        console.log(name, username, phoneNumber, password, email, role);
         if (!name || !username || !phoneNumber || !role || !email) {
             return res.status(400).json({
-                message: 'Something is missing'
-            })
+                message: 'All fields are required',
+                success: true
+            });
         }
         const existingUser = await User.findOne({
             username
         });
         if (existingUser) {
-            return res.json(400).json({
+            return res.status(400).json({
                 message: 'User already exist',
 
             });
@@ -38,12 +40,16 @@ export const createUser = async(req, res) => {
             email
         });
         await user.save();
-        res.status(201).json({
+        return res.status(201).json({
             message: 'User registered successfully',
             success: true
         });
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: 'Internal server error',
+            error: error.message
+        })
     }
 };
 

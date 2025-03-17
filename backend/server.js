@@ -1,8 +1,10 @@
 import express from "express"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
-import cors from "cors"
+
 import jwt from "jsonwebtoken"
+import cors from "cors";
+
 import connectDB from "./config/db.js"
 import notificationRoutes from "./routes/notificationRoute.js"
 
@@ -22,6 +24,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+}));
 
 app.use("/api/v1/notifications", notificationRoutes);
 app.use("/api/v1/disease-predictions", diseasePredictionRoutes);

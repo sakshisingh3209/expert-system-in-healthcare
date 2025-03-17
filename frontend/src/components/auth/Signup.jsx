@@ -28,6 +28,8 @@ function Signup() {
   const changeFileHandler= (e)=>{
     setInput({...input,file:e.target.files?.[0]});
   }
+
+  console.log(input);
   const submitHandler=async(e)=>{
     e.preventDefault();
     const formData= new FormData();
@@ -36,13 +38,13 @@ function Signup() {
     formData.append("email",input.email);
     formData.append("phoneNumber",input.phoneNumber);
     formData.append("password",input.password);
-    formData.append("role",input.role);
+    formData.append("role",input.role || "");
     if(input.file){
       formData.append("file",input.file);
     }
   try{
     const res=  await axios.post(`${USER_API_END_POINT}/register`,formData,{
-      headers:{
+      headers: {
         "Content-Type":"multipart/form-data"
       },
       withCredentials:true,
@@ -92,7 +94,7 @@ console.log(error);
         <div className='my-2'>
             <Label className='my-1'>PhoneNumber</Label>
             <Input 
-            type="phoneNumber"
+            type="tel"
             name="phoneNumber"
             value={input.phoneNumber}
             onChange={changeEventHandler }
@@ -113,6 +115,7 @@ console.log(error);
   <div className='flex items-center space-x-2'>
   <Input
   type="radio"
+  id="r1"
   name="role"
   value="patient"
   checked={input.role==='patient'}
@@ -124,6 +127,7 @@ console.log(error);
   <div className='flex items-center space-x-2'>
   <Input
   type="radio"
+  id="r2"
   name="role"
   value="doctor"
   checked={input.role==='doctor'}
@@ -135,6 +139,7 @@ console.log(error);
   <div className='flex items-center space-x-2'>
   <Input
   type="radio"
+  id="r3"
   name="role"
   value="admin"
   checked={input.role==='admin'}
