@@ -56,13 +56,16 @@ export const register = async(req, res) => {
 
 export const loginUser = async(req, res) => {
     try {
-        const { username, password } = req.body;
+        const { username, password, role } = req.body;
 
-        // Find the user by username
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username, role });
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found or role mismatch" });
 
-        // Check if user exists and verify the password
-        if (!user || !(await bcrypt.compare(password, user.password))) {
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
             return res.status(401).json({ message: "Invalid username or password" });
         }
 
@@ -76,6 +79,7 @@ export const loginUser = async(req, res) => {
             expiresIn: "1h",
         });
 
+
         // Send response with token
         res.json({
             message: "User logged in successfully",
@@ -88,6 +92,7 @@ export const loginUser = async(req, res) => {
                 lastLogin: user.lastLogin,
             },
         });
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

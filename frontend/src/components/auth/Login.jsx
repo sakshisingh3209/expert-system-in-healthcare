@@ -5,10 +5,13 @@ import { Label } from '../ui/label';
 
 import { Button } from '../ui/button';
 import { RadioGroup } from '../ui/radio-group';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { USER_API_END_POINT } from '../utils/constant';
 import { toast } from 'sonner';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoading } from '@/redux/authSlice';
+import { Loader, Loader2 } from 'lucide-react';
 
 function Login() {
 const [input,setInput]=useState({
@@ -16,6 +19,8 @@ const [input,setInput]=useState({
     password:"",
     role:""
   });
+  const {loading}= useSelector(store=>store.auth);
+  const dispatch=useDispatch();
   const navigate= useNavigate();
   const changeEventHandler=(e)=>{
     setInput({...input,[e.target.name]:e.target.value});
@@ -26,18 +31,23 @@ const [input,setInput]=useState({
  
     
   try{
+    dispatch((setLoading(true)));
     const res=  await axios.post(`${USER_API_END_POINT}/login`,input,{
       headers:{
         "Content-Type":"application/json"
       },
       withCredentials:true,
     });
-   if(res.data.success){
+    
+   if(res.data.token){
+
     navigate("/");
     toast.success(res.data.message);
    }
   }catch(error){
 console.log(error);
+  }finally{
+    dispatch(setLoading(false));
   }
   
   }
@@ -73,6 +83,7 @@ console.log(error);
   <div className='flex items-center space-x-2'>
   <Input
   type="radio"
+  id="r1"
   name="role"
   value="patient"
   checked={input.role==='patient'}
@@ -84,6 +95,7 @@ console.log(error);
   <div className='flex items-center space-x-2'>
   <Input
   type="radio"
+  id="r2"
   name="role"
   value="doctor"
   checked={input.role==='doctor'}
@@ -95,6 +107,7 @@ console.log(error);
   <div className='flex items-center space-x-2'>
   <Input
   type="radio"
+  id="r3"
   name="role"
   value="admin"
   checked={input.role==='admin'}
@@ -106,8 +119,10 @@ console.log(error);
  </RadioGroup>
  
 </div>
+{
+loading? <Button className= "w-full my-4"><Loader2 className='mr-2 h-4 w-4 animate-spin'/>Please wait</Button>: <Button type="submit" className="w-full my-4 bg-black text-white">Login</Button>
+}
 
- <Button type="submit" className="w-full my-4 bg-black text-white">Login</Button>
  <span>Don't have an account? <Link to="/signup" className="text-blue-600">Signup</Link></span>
     </form>
    </div>

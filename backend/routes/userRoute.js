@@ -1,6 +1,6 @@
 import express from "express";
-import multer from "multer";
-import { register, loginUser, getUserByStatus, getUserById, updateUser, deleteUser, logoutUser, } from "../controllers/userController.js";
+
+import { register, loginUser, getUserByStatus, getUserById, updateUser, deleteUser } from "../controllers/userController.js";
 import { singleUpload } from "../middlewares/multer.js";
 const router = express.Router();
 router.post("/register", singleUpload, register);
