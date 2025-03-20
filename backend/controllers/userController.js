@@ -1,4 +1,6 @@
 import { User } from "../models/UserModel.js";
+import { Patient } from "../models/PatientModel.js";
+import { Doctor } from "../models/DoctorModel.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"

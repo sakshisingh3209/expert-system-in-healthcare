@@ -4,6 +4,8 @@ import Signup from "./components/auth/Signup";
 import { createBrowserRouter } from "react-router-dom"
 import { RouterProvider } from "react-router-dom";
 import Home from "./components/Home";
+import AboutPage from "./components/AboutPage";
+
 
 
 
@@ -20,7 +22,11 @@ const appRouter=createBrowserRouter([
   {
     path:'/signup',
     element:<Signup/>
-  }
+  },
+  {
+    path:'/About',
+    element:<AboutPage/>
+      }
 ]);
 
 function App() {
