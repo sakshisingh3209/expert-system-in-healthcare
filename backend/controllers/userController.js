@@ -4,56 +4,107 @@ import { Doctor } from "../models/DoctorModel.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
-export const register = async(req, res) => {
 
+export const register = async(req, res) => {
     try {
         const {
             name,
             username,
+            password,
+            email,
             phoneNumber,
             role,
-            password,
-            email
+            profilePicture,
+            specialization,
+            licenseNumber,
+            availability,
+            DOB,
+            gender,
+            medicalHistory,
+            currentMedications,
+            allergies,
+            contactInfo,
         } = req.body;
 
-        console.log(name, username, phoneNumber, password, email, role);
-        if (!name || !username || !phoneNumber || !role || !email) {
-            return res.status(400).json({
-                message: 'All fields are required',
-                success: true
-            });
-        }
-        const existingUser = await User.findOne({
-            username
-        });
-        if (existingUser) {
-            return res.status(400).json({
-                message: 'User already exist',
 
-            });
+        // Check if username already exists
+        const existingUsername = await User.findOne({ username });
+        if (existingUsername) {
+            return res.status(400).json({ message: 'Username already exists' });
         }
+
+        // Hash password before saving
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({
+
+        // Create user in the User collection
+        const user = await User.create({
             name,
             username,
             password: hashedPassword,
+            email,
             phoneNumber,
             role,
-            email
+            profilePicture,
         });
-        await user.save();
-        return res.status(201).json({
-            message: 'User registered successfully',
-            success: true
-        });
+
+        if (role === 'doctor') {
+            // If the user is a doctor, create a Doctor document
+            if (!specialization || !licenseNumber) {
+                return res.status(400).json({ message: 'Doctor details are required' });
+            }
+
+            const doctor = await Doctor.create({
+                userId: user._id,
+                specialization,
+                licenseNumber,
+                availability: availability || { days: [], timeSlots: [] },
+            });
+
+            return res.status(201).json({
+                success: true,
+                message: 'Doctor registered successfully',
+                data: doctor,
+            });
+        }
+
+        if (role === 'patient') {
+            // If the user is a patient, create a Patient document
+            if (!DOB || !gender) {
+                return res.status(400).json({ message: 'Patient details are required' });
+            }
+
+            const patient = await Patient.create({
+                userId: user._id,
+                DOB,
+                gender,
+                medicalHistory: medicalHistory || [],
+                currentMedications: currentMedications || [],
+                allergies: allergies || [],
+                contactInfo,
+            });
+
+            return res.status(201).json({
+                success: true,
+                message: 'Patient registered successfully',
+                data: patient,
+            });
+        }
+
+        return res.status(400).json({ message: 'Invalid role' });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            message: 'Internal server error',
-            error: error.message
-        })
+        // ✅ Handle MongoDB duplicate key error
+        if (error.code === 11000) {
+            if (error.keyPattern.username) {
+                return res.status(400).json({ message: 'Username already exists' });
+            }
+
+        }
+
+        console.error('Registration Error:', error.message);
+        res.status(500).json({ message: 'Server error' });
     }
 };
+
 
 
 export const loginUser = async(req, res) => {

@@ -23,16 +23,8 @@ const patientSchema = mongoose.Schema({
     }],
     allergies: [{
         type: String
-    }],
-    contactInfo: {
-        phone: {
-            type: String,
-            required: true
-        },
-        address: {
-            type: String
-        }
-    }
+    }]
+
 
 }, { timestamps: true });
 export const Patient = mongoose.model('Patient', patientSchema);

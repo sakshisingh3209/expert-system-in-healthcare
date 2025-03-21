@@ -32,17 +32,23 @@ export const getAllDoctors = async(req, res) => {
 };
 
 //get a single doctor by Id
-export const getDoctorById = async(req, res) => {
+export const getDoctor = async(req, res) => {
     try {
-        const doctor = await Doctor.findById(req.params.id).populate("patients").populate("userId");
-        if (!doctor) {
-            return res.status(404).json({ message: "Doctor not found" });
-        }
-        res.status(200).json(doctor);
+        const { name, specialization, rating, fee } = req.query;
+
+        let filter = {};
+
+        if (name) filter.name = { $regex: name, $options: 'i' };
+        if (specialization) filter.specialization = specialization;
+        if (rating) filter.rating = { $gte: parseInt(rating) };
+        if (fee) filter.fee = { $lte: parseInt(fee) };
+
+        const doctors = await Doctor.find(filter);
+        res.json(doctors);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Error fetching doctor" });
+        res.status(500).json({ error: 'Server error' });
     }
+
 }
 
 //update doctor details

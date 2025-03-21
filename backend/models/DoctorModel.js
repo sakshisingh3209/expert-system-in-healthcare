@@ -19,7 +19,16 @@ const doctorSchema = mongoose.Schema({
     }],
     availability: {
         days: [{ type: String }],
+
         timeSlots: [{ type: String }]
+    },
+    rating: {
+        type: Number,
+        required: true
+    },
+    fee: {
+        type: Number,
+        required: true
     }
 }, { timestamps: true });
 

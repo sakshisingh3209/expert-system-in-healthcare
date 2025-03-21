@@ -2,14 +2,14 @@ import express from "express";
 import {
     createDoctor,
     getAllDoctors,
-    getDoctorById,
+    getDoctor,
     updateDoctor,
     deleteDoctor
 } from "../controllers/doctorController.js";
 const router = express.Router();
 router.post("/", createDoctor);
 router.get("/", getAllDoctors);
-router.get("/:id", getDoctorById);
+router.get("/:id", getDoctor);
 router.put("/:id", updateDoctor);
 router.delete("/:id", deleteDoctor);
 
