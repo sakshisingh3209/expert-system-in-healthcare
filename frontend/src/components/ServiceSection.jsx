@@ -2,9 +2,13 @@ import ServiceList from './ServiceList';
 import HowItWorks from './HowItWorks';
 import Testimonial from './Testimonial';
 import CTA from './CTA';
+import Footer from './shared/Footer';
+import Navbar from './shared/Navbar';
 
 const ServiceSection = () => {
   return (
+    <>
+    <Navbar/>
     <div className="bg-gray-100 py-16">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
@@ -28,6 +32,8 @@ const ServiceSection = () => {
         <CTA />
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 

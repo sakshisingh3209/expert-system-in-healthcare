@@ -1,0 +1,42 @@
+/* Sidebar */
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #1f2937;
+    color: white;
+    position: fixed;
+}
+
+.sidebar a {
+    padding: 16px;
+    display: block;
+    color: white;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.sidebar a:hover {
+    background-color: #374151;
+}
+
+
+/* Header */
+
+.header {
+    background-color: white;
+    padding: 16px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header button {
+    background-color: #ef4444;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background 0.3s ease;
+}
+
+.header button:hover {
+    background-color: #dc2626;
+}

@@ -1,5 +1,6 @@
 import { FaUserMd, FaHeartbeat, FaCalendarCheck } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import Navbar from './shared/Navbar';
 
 const services = [
   {
@@ -26,6 +27,7 @@ const ServiceList = () => {
   const navigate = useNavigate();
 
   return (
+  
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {services.map((service, index) => (
         <div
