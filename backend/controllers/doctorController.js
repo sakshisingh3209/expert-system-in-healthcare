@@ -64,7 +64,7 @@ export const updateDoctor = async(req, res) => {
                 availability
             }, { new: true }
         );
-        if (!updateDoctor) {
+        if (!updatedDoctor) {
             return res.status(404).json({ message: "Doctor not found" });
         }
         res.status(200).json(updatedDoctor);
@@ -79,7 +79,7 @@ export const updateDoctor = async(req, res) => {
 export const deleteDoctor = async(req, res) => {
     try {
         const deletedDoctor = await Doctor.findByIdAndDelete(req.params.id);
-        if (!deleteDoctor) {
+        if (!deletedDoctor) {
             return res.status(404).json({ message: "Doctor not found" });
         }
         res.status(200).json({ message: "Doctor deleted successfully" });

@@ -5,9 +5,10 @@ import Footer from "./shared/Footer";
 import Navbar from "./shared/Navbar";
 const AboutPage = () => {
     return (
-        
+        <div>
+          <Navbar/>
       <div className="bg-gray-50 min-h-screen p-6">
-        <Navbar/>
+       
         {/* Hero Section */}
         <AboutHero
           title="About Us"
@@ -33,7 +34,9 @@ const AboutPage = () => {
             />
           </div>
         </div>
-        <Footer/>
+      
+      </div>
+      <Footer/>
       </div>
     );
   };

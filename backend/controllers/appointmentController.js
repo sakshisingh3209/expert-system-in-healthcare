@@ -1,100 +1,126 @@
-import { Appointment } from "../models/AppointmentModel.js";
+import { Appointment } from "../models/appointmentModel.js";
+import { Patient } from "../models/PatientModel.js";
+import { Doctor } from "../models/DoctorModel.js";
 
 
 export const scheduleAppointment = async(req, res) => {
+    const { patientId, doctorId, appointmentDate, notes } = req.body;
+
     try {
-        const { patientId, doctorId, appointmentDate, status, notes } = req.body;
-        if (!patientId || !doctorId || !appointmentDate) {
-            return res.status(400).jso({ message: "Missing required fields" });
+        // Validate patient and doctor existence
+        const patient = await Patient.findById(patientId);
+        const doctor = await Doctor.findById(doctorId);
+
+        if (!patient || !doctor) {
+            return res.status(404).json({ message: "Patient or Doctor not found" });
         }
 
-        const newAppointment = new Appointment({
+        // Check if the appointment date is in the future
+        if (new Date(appointmentDate) < new Date()) {
+            return res.status(400).json({ message: "Appointment date must be in the future" });
+        }
+
+        // Create new appointment
+        const appointment = new Appointment({
             patientId,
             doctorId,
             appointmentDate,
-            status: status || "scheduled",
             notes
         });
-        await newAppointment.save();
-        res.status(201).json(newAppointment);
+
+        await appointment.save();
+
+        res.status(201).json({ message: "Appointment scheduled successfully", appointment });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Error scheduling appointment" });
+        console.error("Error scheduling appointment:", error);
+        res.status(500).json({ message: "Server error" });
     }
 };
 
-//get all appointments for a patient
 
 export const getAppointmentByPatient = async(req, res) => {
+    const { patientId } = req.params;
+
     try {
-        const { patientId } = req.params;
-        const appointments = await Appointment.find({ patientId }).populate("doctorId", "name specialization").sort({ appointmentDate: 1 });
+        const appointments = await Appointment.find({ patientId })
+            .populate("doctorId", "specialization rating fee")
+            .sort({ appointmentDate: 1 }); // Sort by appointment date
+
         if (!appointments.length) {
             return res.status(404).json({ message: "No appointments found for this patient" });
         }
+
         res.status(200).json(appointments);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Error fetching appointments" });
+        console.error("Error fetching appointments:", error);
+        res.status(500).json({ message: "Server error" });
     }
 };
 
-//get all appointments for a doctor
+
 export const getAppointmentByDoctor = async(req, res) => {
+    const { doctorId } = req.params;
+
     try {
-        const { doctorId } = req.params;
-        const appointments = await Appointment.find({ doctorId }).populate("patientId", "name age").sort({ appointmentDate: 1 });
+        const appointments = await Appointment.find({ doctorId })
+            .populate("patientId", "userId DOB gender")
+            .sort({ appointmentDate: 1 }); // Sort by appointment date
+
         if (!appointments.length) {
             return res.status(404).json({ message: "No appointments found for this doctor" });
         }
+
         res.status(200).json(appointments);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Error fetching appointments" });
+        console.error("Error fetching doctor appointments:", error);
+        res.status(500).json({ message: "Server error" });
     }
-
 };
 
 
-
-//update an appointment status
 export const updateAppointmentStatus = async(req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
     try {
-        const { id } = req.params;
-        const { status } = req.body;
-        if (!["scheduled", "completed", "canceled"].includes(status)) {
+        const appointment = await Appointment.findById(id);
+
+        if (!appointment) {
+            return res.status(404).json({ message: "Appointment not found" });
+        }
+
+        // Check valid status values
+        const allowedStatuses = ['scheduled', 'completed', 'canceled'];
+        if (!allowedStatuses.includes(status)) {
             return res.status(400).json({ message: "Invalid status value" });
         }
-        const updatedAppointment = await Appointment.findByIdAndUpdate(
-            id, {
-                status
-            }, { new: true }
-        );
 
-        if (!updatedAppointment) {
-            return res.status(404).json({ message: "Appointment not found" });
-        }
-        res.status(200).json(updatedAppointment);
+        appointment.status = status;
+        await appointment.save();
+
+        res.status(200).json({ message: "Appointment status updated", appointment });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Error updating appointment status" });
+        console.error("Error updating appointment status:", error);
+        res.status(500).json({ message: "Server error" });
     }
 };
 
 
-
-//delete an appointment
-
 export const deleteAppointment = async(req, res) => {
+    const { id } = req.params;
+
     try {
-        const { id } = req.params;
-        const deletedAppointment = await Appointment.findByIdAndDelete(id);
-        if (!deletedAppointment) {
+        const appointment = await Appointment.findById(id);
+
+        if (!appointment) {
             return res.status(404).json({ message: "Appointment not found" });
         }
+
+        await appointment.deleteOne();
+
         res.status(200).json({ message: "Appointment deleted successfully" });
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Error deleting appointment" });
+        console.error("Error deleting appointment:", error);
+        res.status(500).json({ message: "Server error" });
     }
-}
+};

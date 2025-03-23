@@ -18,10 +18,15 @@ function Navbar() {
         </div>
         <div className="flex items-center gap-2">
           <ul className="flex font-medium items-center gap-5">
-            <li className="flex font-medium items-center gap-5">Home</li>
-            <li>Services</li>
-            <li>Contact</li>
-            <li>About</li>
+          <li>
+              <Link to="/" className="hover:text-blue-500">Home</Link>
+            </li>
+
+            <li><Link to="/service" className="hover:text-blue-500">Services</Link>
+            </li>
+
+            <li><Link to="/about" className="hover:text-blue-500">About</Link>
+            </li>
           </ul>
           {
             !user ?(
