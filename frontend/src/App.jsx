@@ -16,6 +16,11 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./components/auth/Dashboard";
 import  MedicalHistory from "./components/dashboard/sections/MedicalHistory";
 import Appointments from "./components/dashboard/sections/Appointments";
+import DoctorDashboard from "./components/DoctorDashboard/DoctorDashboard";
+import UpcomingAppointments from "./components/DoctorDashboard/MainContent/UpcomingAppointments";
+import PatientList from "./components/DoctorDashboard/MainContent/PatientList";
+import ProfileSection from "./components/DoctorDashboard/MainContent/ProfileSection";
+import Settings from "./components/dashboard/sections/Settings";
 const appRouter = createBrowserRouter([
   {
     path: '/',
@@ -89,6 +94,27 @@ const appRouter = createBrowserRouter([
         element:<MedicalHistory/>
       }
     ]
+  },
+  {
+    path: "/doctor-dashboard",
+    element:<DoctorDashboard/>,
+    children:[
+      {
+        path:"appointments",
+        element:<UpcomingAppointments/>
+      },
+      {
+        path:"patients",
+        element:<PatientList/>
+      },{
+        path:"Profile",
+        element:<ProfileSection/>
+      },
+      {
+        path:"settings",
+        element:<Settings/>
+      }
+    ],
   }
 
 ]);

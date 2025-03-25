@@ -59,11 +59,11 @@ const doctorSchema = new mongoose.Schema({
     },
     rating: {
         type: Number,
-        required: true
+
     },
     fee: {
         type: Number,
-        required: true
+
     }
 }, { timestamps: true });
 
