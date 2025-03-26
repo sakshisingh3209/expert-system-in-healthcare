@@ -44,5 +44,21 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
+userSchema.virtual('doctorData', {
+    ref: 'Doctor',
+    localField: '_id',
+    foreignField: 'userId',
+    justOne: true
+});
+
+userSchema.virtual('patientData', {
+    ref: 'Patient',
+    localField: 'id',
+    foreignField: 'userId',
+    justOne: true
+});
+
+userSchema.set('toJSON', { virtuals: true });
+userSchema.set('toObject', { virtuals: true });
 
 export const User = mongoose.model('User', userSchema);

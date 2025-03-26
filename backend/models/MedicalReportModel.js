@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const medicalReportSchema = new mongoose.Schema({
     patientId: {
         type: mongoose.Schema.Types.ObjectId,
-        Ref: 'Patient',
+        ref: 'Patient',
         required: true
     },
     fileUrl: {

@@ -1,25 +1,18 @@
-import React from "react";
-import { LogOut } from "lucide-react";
+import React from 'react';
 
 const Header = () => {
-  const handleLogout = () => {
-    console.log("Logged out");
-    // Add logout logic here
-  };
-
   return (
-    <div className="flex justify-between items-center bg-gray-100 p-4 shadow-md">
-      <h1 className="text-2xl font-semibold">Doctor Dashboard</h1>
+    <div className="bg-white p-4 shadow flex justify-between items-center">
+      <h1 className="text-xl font-bold">Welcome, Doctor!</h1>
       <div className="flex items-center gap-4">
         {/* Profile Icon */}
-        <img
-          src="https://github.com/shadcn.png"
-          alt="Profile"
-          className="w-10 h-10 rounded-full cursor-pointer"
+        <img 
+          src="/doctor-profile.png" 
+          alt="Profile" 
+          className="w-10 h-10 rounded-full border border-gray-300"
         />
         {/* Logout Button */}
-        <button onClick={handleLogout} className="flex items-center gap-2 bg-red-500 text-white px-3 py-2 rounded">
-          <LogOut size={18} />
+        <button className="text-red-500 font-semibold hover:text-red-700">
           Logout
         </button>
       </div>

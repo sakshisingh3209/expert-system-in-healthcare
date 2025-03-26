@@ -21,6 +21,7 @@ import UpcomingAppointments from "./components/DoctorDashboard/MainContent/Upcom
 import PatientList from "./components/DoctorDashboard/MainContent/PatientList";
 import ProfileSection from "./components/DoctorDashboard/MainContent/ProfileSection";
 import Settings from "./components/dashboard/sections/Settings";
+import Reports from "./components/dashboard/sections/Reports";
 const appRouter = createBrowserRouter([
   {
     path: '/',
@@ -92,6 +93,12 @@ const appRouter = createBrowserRouter([
       },{
         path:"medical-history",
         element:<MedicalHistory/>
+      },{
+        path:"settings",
+        element:<Settings/>
+      },{
+        path:"reports",
+        element:<Reports/>
       }
     ]
   },

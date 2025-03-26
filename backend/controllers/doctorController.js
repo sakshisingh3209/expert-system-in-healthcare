@@ -53,21 +53,43 @@ export const getDoctor = async(req, res) => {
 
 //update doctor details
 
-export const updateDoctor = async(req, res) => {
+export const updateDoctor = async (req, res) => {
     try {
-        const { specialization, licenseNumber, patients, availability } = req.body;
+        const { specialization, licenseNumber, patients, availability, fee, contact, address } = req.body;
+
         const updatedDoctor = await Doctor.findByIdAndUpdate(
-            req.params.id, {
+            req.params.id,
+            {
                 specialization,
                 licenseNumber,
                 patients,
-                availability
-            }, { new: true }
+                availability,
+                fee,
+                contact,
+                address
+            },
+            { new: true }
         );
+
         if (!updatedDoctor) {
             return res.status(404).json({ message: "Doctor not found" });
         }
-        res.status(200).json(updatedDoctor);
+
+        // ✅ Return the full doctor object, including all fields
+        res.status(200).json({
+            id: updatedDoctor._id,
+            username: updatedDoctor.username,
+            specialization: updatedDoctor.specialization,
+            licenseNumber: updatedDoctor.licenseNumber,
+            patients: updatedDoctor.patients,
+            availability: updatedDoctor.availability,
+            fee: updatedDoctor.fee,
+            contact: updatedDoctor.contact,
+            address: updatedDoctor.address,
+            role: updatedDoctor.role,
+            status: updatedDoctor.status,
+            lastLogin: updatedDoctor.lastLogin
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Error updating doctor" });

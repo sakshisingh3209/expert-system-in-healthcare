@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
 const PatientList = () => {
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Patient List</h2>
-      {/* Add logic to display patient list */}
-      <p>No patients available</p>
+      <h2 className="text-xl font-bold mb-4">Patient List</h2>
+      {/* Example content */}
+      <p>No patients available right now.</p>
     </div>
   );
 };

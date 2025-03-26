@@ -1,32 +1,23 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
 
-const Sidebar = () => {
+const Sidebar = ({ setActiveSection }) => {
   return (
-    <div className="w-64 bg-gray-800 text-white h-screen p-4">
-      <h2 className="text-2xl font-bold mb-6">Doctor Panel</h2>
-      <ul className="space-y-4">
-        <li>
-          <Link to="/doctor/dashboard/appointments" className="hover:text-blue-400">
-            Upcoming Appointments
-          </Link>
-        </li>
-        <li>
-          <Link to="/doctor/dashboard/patients" className="hover:text-blue-400">
-            Patient List
-          </Link>
-        </li>
-        <li>
-          <Link to="/doctor/dashboard/profile" className="hover:text-blue-400">
-            Profile
-          </Link>
-        </li>
-        <li>
-          <Link to="/doctor/dashboard/settings" className="hover:text-blue-400">
-            Settings
-          </Link>
-        </li>
-      </ul>
+    <div className="w-64 bg-blue-800 text-white p-4">
+      <h2 className="text-xl font-bold mb-4">Doctor Dashboard</h2>
+      <nav>
+        <button onClick={() => setActiveSection('appointments')} className="block py-2 hover:bg-blue-700">
+          Upcoming Appointments
+        </button>
+        <button onClick={() => setActiveSection('patients')} className="block py-2 hover:bg-blue-700">
+          Patient List
+        </button>
+        <button onClick={() => setActiveSection('profile')} className="block py-2 hover:bg-blue-700">
+          Profile
+        </button>
+        <button onClick={() => setActiveSection('settings')} className="block py-2 hover:bg-blue-700">
+          Settings
+        </button>
+      </nav>
     </div>
   );
 };

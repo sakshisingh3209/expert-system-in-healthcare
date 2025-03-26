@@ -177,7 +177,13 @@ export const getUserByStatus = async(req, res) => {
 //get user by id
 export const getUserById = async(req, res) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.params.id).populate({
+            path: 'doctorData',
+            select: 'specialization'
+        }).populate({
+            path: 'patientData',
+            select: 'DOB gender medicalHistory'
+        }).lean();
         if (!user) {
             return res.status(404).json({
                 message: 'User not found'

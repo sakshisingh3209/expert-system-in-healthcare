@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
 const UpcomingAppointments = () => {
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Upcoming Appointments</h2>
-      {/* Add logic to display appointment data */}
-      <p>No upcoming appointments</p>
+      <h2 className="text-xl font-bold mb-4">Upcoming Appointments</h2>
+      {/* Example content */}
+      <p>No appointments available right now.</p>
     </div>
   );
 };
