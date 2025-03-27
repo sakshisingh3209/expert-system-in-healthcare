@@ -22,6 +22,7 @@ import PatientList from "./components/DoctorDashboard/MainContent/PatientList";
 import ProfileSection from "./components/DoctorDashboard/MainContent/ProfileSection";
 import Settings from "./components/dashboard/sections/Settings";
 import Reports from "./components/dashboard/sections/Reports";
+
 const appRouter = createBrowserRouter([
   {
     path: '/',
@@ -42,10 +43,6 @@ const appRouter = createBrowserRouter([
   {
     path: '/service',
     element: <ServiceSection />
-  },
-  {
-    path: '/doctors',
-    element: <DoctorList />
   },
   {
     path: '/doctors/:id',
@@ -79,6 +76,7 @@ const appRouter = createBrowserRouter([
     path: '/doctor/:id',
     element: <DoctorProfile />
   },
+  //patient
   {
     path:'/dashboard',
     element:(
@@ -99,9 +97,14 @@ const appRouter = createBrowserRouter([
       },{
         path:"reports",
         element:<Reports/>
+      },
+      {
+        path: 'doctors',
+        element: <DoctorList />
       }
     ]
   },
+  //doctor 
   {
     path: "/doctor-dashboard",
     element:<DoctorDashboard/>,

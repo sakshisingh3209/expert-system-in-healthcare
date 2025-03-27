@@ -8,8 +8,11 @@ const appointmentSlice = createSlice({
     name: 'appointments',
     initialState,
     reducers: {
-        addAppointment: (state, action) => {
+        setAppointments: (state, action) => {
             state.appointments.push(action.payload);
+        },
+        addAppointments: (state, action) => {
+            state.appointments = action.payload;
         },
         cancelAppointment: (state, action) => {
             state.appointments = state.appointments.filter(
@@ -27,7 +30,7 @@ const appointmentSlice = createSlice({
     },
 });
 
-export const { addAppointment, cancelAppointment, updateAppointment } =
+export const { setAppointments, addAppointment, cancelAppointment, updateAppointment } =
 appointmentSlice.actions;
 
 export default appointmentSlice.reducer;
